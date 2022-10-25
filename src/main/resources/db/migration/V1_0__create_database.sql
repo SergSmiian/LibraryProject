@@ -23,7 +23,7 @@ CREATE TYPE public.userstatus AS ENUM (
     'BLOCKED'
 );
 CREATE TABLE IF NOT EXISTS public.author_to_writing (
-    id uuid DEFAULT public.uuid_generate_v1() NOT NULL,
+    id uuid DEFAULT heroku_ext.uuid_generate_v1() NOT NULL,
     author_id uuid,
     writing_id uuid
 );
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS public.authors (
     last_name character varying
 );
 CREATE TABLE IF NOT EXISTS public.books (
-    id uuid DEFAULT public.uuid_generate_v1() NOT NULL,
+    id uuid DEFAULT heroku_ext.uuid_generate_v1() NOT NULL,
     isbn character varying,
     image_path character varying,
     year numeric,
@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS public.users (
 );
 
 CREATE TABLE IF NOT EXISTS public.writing_to_book (
-    id uuid DEFAULT public.uuid_generate_v1() NOT NULL,
+    id uuid DEFAULT heroku_ext.uuid_generate_v1() NOT NULL,
     writing_id uuid,
     book_id uuid
 );
