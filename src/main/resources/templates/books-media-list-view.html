@@ -1,0 +1,288 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" lang="en"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:insert="fragments/head :: headtag">
+
+</head>
+    <body>
+
+        <!-- Start: Header Section -->
+        <header id="header-v1" class="navbar-wrapper inner-navbar-wrapper"
+                th:insert="fragments/menu :: head(page='BOOKS')">
+        </header>
+        <!-- End: Header Section -->
+                
+        <!-- Start: Page Banner -->
+        <section class="page-banner services-banner">
+            <div class="container">
+                <div class="banner-header">
+                    <h2>Books & Media Listing</h2>
+                    <span class="underline center"></span>
+                    <p class="lead">Proin ac eros pellentesque dolor pharetra tempo.</p>
+                </div>
+                <div class="breadcrumb">
+                    <ul>
+                        <li><a th:href="@{/}">Home</a></li>
+                        <li>Books & Media</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <!-- End: Page Banner -->
+
+        <!-- Start: Book & Media Section -->
+        <div id="content" class="site-content">
+            <div id="primary" class="content-area">
+                <main id="main" class="site-main">
+                    <div class="books-media-list">
+                        <div class="container">
+                            <div class="row">
+                                <!-- Start: Search Section -->
+                                <section class="search-filters">
+                                    <div class="container">
+                                        <div class="filter-box">
+                                            <h3>What are you looking for at the library?</h3>
+                                            <form
+                                                    th:action="@{/books/bok}" method="get">
+                                                <div class="col-md-4 col-sm-6">
+                                                    <div class="form-group"
+                                                         id="booksearch">
+                                                        <label
+                                                                class="sr-only" for="title">Search by writing title</label>
+                                                        <input
+                                                                class="form-control" placeholder="Search by writing title" id="title" name="title" type="text" th:value="${search.title}">
+                                                        <input type="hidden"
+                                                               name="size" th:value="${bookPage.size}" />
+                                                        <input type="hidden"
+                                                               name="page" value="0" />
+                                                        <input type="hidden" name="sort" th:value="${sort}" />
+                                                        <input type="hidden" name="order" th:value="${order}" />
+                                                        <input type="hidden"
+                                                               th:if="${searchCriteria.authorIds != null}" id="authorIds" name="authorIds" th:value="${#strings.listJoin(searchCriteria.authorIds, ',')}">
+                                                        <input type="hidden"
+                                                               th:if="${searchCriteria.publisherIds != null}"id="publisherIds" name="publisherIds" th:value="${#strings.listJoin(searchCriteria.publisherIds, ',')}">
+                                                        <input type="hidden"
+                                                               th:if="${searchCriteria.bookStatus != null}"id="bookStatus" name="bookStatus" th:value="${#strings.listJoin(searchCriteria.bookStatus, ',')}">
+
+                                                        <input type="hidden"
+                                                               th:if="${searchCriteria.publicationYear != null}"id="publicationYear" name="publicationYear" th:value="${searchCriteria.publicationYear}">
+
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-2 col-sm-6">
+                                                    <div class="form-group">
+                                                        <input class="form-control" type="submit" value="Search">
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </section>
+                                <!-- End: Search Section -->
+                            </div>
+                            <div class="row">
+                                <div class="col-md-9 col-md-push-3">
+                                    <div class="filter-options margin-list">
+                                        <div class="row">                                            
+                                            <div class="col-md-4 col-sm-4">
+                                                <select name="orderby">
+                                                    <option
+                                                            th:value="'id'"
+                                                            th:text="'Default sorting'"  th:selected="${sort == null}"></option>
+                                                    <option
+                                                            th:value="'title'" th:text="'Sort by title'" th:selected="${sort == 'title'}"></option>
+                                                    <option
+                                                            th:value="'yearOfPublication'" th:text="'Sort by year'" th:selected="${sort == 'yearOfPublication'}"></option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4 col-sm-4"  th:if="${bookPage.numberOfElements>0}">
+                                                <div class="filter-result"
+                                                     th:with="num = ${bookPage.numberOfElements==0?0:1}"
+                                                     th:text="'Showing items '+ ${bookPage.number * bookPage.size + num} + ' to ' + ${bookPage.number * bookPage.size + bookPage.numberOfElements} + ' of ' + ${bookPage.totalElements} + ' total'"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="books-list">
+                                        <div  th:if="${bookPage.numberOfElements==0}">
+                                            <img th:src="@{/images/no-result.png}" />
+
+                                        </div>
+                                        <article
+                                                th:each="book : ${bookPage.content}" th:if="${bookPage.numberOfElements>0}">
+                                            <div class="single-book-box">                                                
+                                                <div class="post-thumbnail">
+                                                    <div class="book-list-icon yellow-icon"></div>
+                                                    <a
+                                                            th:href="@{/books-media-detail-v1.html}"><img alt="Book" th:src="@{${book.imagePath}}" /></a>                                                                 </div>
+                                                <div class="post-detail">
+                                                    <header class="entry-header">
+                                                        <div class="row">
+                                                            <div class="col-sm-6">
+                                                                <h3 class="entry-title">
+                                                                    <strong
+                                                                            th:text="|${book.title}|"></strong>
+                                                                </h3>
+                                                                <ul>
+                                                                    <li><strong th:text="|ISBN : ${book.isbn}|"></strong></li>
+                                                                    <li><strong>Contents: </strong></li>
+                                                                </ul>
+
+                                                                <ul th:each="instance : ${book.writings}">
+                                                                    <li
+                                                                            th:text="|${instance.value} -  ${instance.key}"></li>
+                                                                </ul>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <ul>
+                                                                    <li><strong>Publisher:</strong> <p th:text="${book.publisherName}"></p></li>
+                                                                    <li><strong>Year:</strong><p th:text="${book.yearOfPublication}"></p></li>
+                                                                    <li><strong>Now:</strong> <p th:class="book-status" th:rel="${book.id}" th:text="${book.bookStatus}"></p></li>
+                                                                </ul>                                                                
+                                                            </div>
+                                                        </div>
+                                                    </header>
+                                                    <div class="entry-content">
+                                                        <p>
+                                                                <span
+                                                                        th:text="${#strings.substring(book.description,0,150)}"></span>
+                                                            <span class="dots" th:rel="${book.id}">...</span>
+                                                            <span
+                                                                    th:rel="${book.id}" class="more" th:text="${#strings.substring(book.description,150)}"></span></p>
+
+                                                    </div>
+                                                    <footer
+                                                        class="entry-footer">
+                                                        <a class="btn btn-dark-gray read-more"
+                                                           th:rel="${book.id}">Read more</a>
+                                                        <a
+                                                                class="btn btn-dark-gray cart add-item cart-add-item" th:rel="${book.id}" sec:authorize="hasAuthority('USER') || isAnonymous()" th:if="${book.bookStatus.name() == 'FREE'}">Add to Cart</a>
+                                                    </footer>
+                                                </div>
+                                                <div class="clear"></div>
+                                            </div>
+                                        </article>
+
+                                    </div>
+                                    <nav class="navigation pagination text-center">
+                                        <h2 class="screen-reader-text">Posts navigation</h2>
+                                        <div class="nav-links">
+                                            <ul>
+                                                <li class="prev page-numbers">
+                                                    <a th:if="${bookPage.number > 0}"
+                                                       th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+                                                       th:href="@{${urlBuilder.replaceQueryParam('page', __${bookPage.number-1}__).build().toUriString()}}">
+                                                    <i class="fa fa-long-arrow-left"></i> Previous</a></li>
+                                                <li
+                                                        th:if="${bookPage.totalPages > 0}"  th:each="pageNumber: ${#numbers.sequence(1, bookPage.totalPages)}" th:class="${pageNumber==bookPage.number+1} ? 'page-numbers current' : 'page-numbers'"  >
+                                            <span
+                                                    th:if="${pageNumber==bookPage.number+1}"  th:text=${pageNumber}></span>
+                                            <a
+                                                    th:unless="${pageNumber==bookPage.number+1}"
+                                                    th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+                                                    th:href="@{${urlBuilder.replaceQueryParam('page', __${pageNumber-1}__).build().toUriString()}}"
+                                                    th:text=${pageNumber}></a>
+
+                                                </li>
+                                                <li class="next page-numbers"><a
+                                                        th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+                                                        th:if="${bookPage.number < bookPage.totalPages - 1}"
+                                                        th:href="@{${urlBuilder.replaceQueryParam('page', __${bookPage.number+1}__).build().toUriString()}}">Next <i
+                                                        class="fa fa-long-arrow-right"></i></a></li>
+                                            </ul>
+                                        </div>
+                                    </nav>
+                                </div>
+                                <div class="col-md-3 col-md-pull-9">
+                                    <aside id="secondary"
+                                           class="sidebar widget-area1" >
+                                        <div
+                                                class="widget1 widget_narrow_search1" >
+                                            <h4 class="widget-title1" >Narrow
+                                                your search</h4>
+                                            <div data-content>
+                                                <form  th:action="@{/books/bok}" method="get">
+                                                <div data-accordion>
+                                                    <h5
+                                                            class="widget-sub-title" data-control>Author</h5>
+                                                    <div class="widget_material" data-content>
+                                                            <label th:each="author : ${authors}">
+                                                                <input
+                                                                        type="checkbox" class="author" th:value=${author.id} name="authorIds" th:text="${' ' + #strings.defaultString(author.firstName,' ')+ ' '+ author.lastName}" th:checked="${searchCriteria.authorIds!=null && searchCriteria.authorIds.contains(author.id)}">
+                                                            </label>
+                                                    </div>
+                                                </div>
+                                                <div data-accordion>
+                                                    <h5
+                                                            class="widget-sub-title" data-control>Publisher </h5>
+                                                    <div class="widget widget_material" data-content>
+                                                            <label
+                                                                    th:each="publisher : ${publishers}">
+                                                                <input
+                                                                        type="checkbox" class="publisher" th:value=${publisher.id}  name="publisherIds" th:text="${' ' + publisher.name}" th:checked="${searchCriteria.publisherIds!=null && searchCriteria.publisherIds.contains(publisher.id)}">
+                                                            </label>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                                <div data-accordion>
+                                                    <h5
+                                                            class="widget-sub-title" data-control>Status</h5>
+                                                    <div class="widget widget_material" data-content>
+                                                            <label
+                                                                    th:each="bookStatus : ${T(com.model.status.BookStatus).values()}">
+                                                            <input
+                                                                    type="checkbox" class="bookStatus" th:value="${bookStatus}" th:text=" '  '+ ${bookStatus}" th:checked="${searchCriteria.bookStatus!=null && searchCriteria.bookStatus.contains(bookStatus)}" name="bookStatus"> </label>
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                                <div data-accordion>
+                                                    <h5
+                                                            class="widget-sub-title" data-control>Publication year</h5>
+                                                    <div class="widget widget_material" data-content>
+                                                            <input
+                                                                    type="number" min="1445" th:max="${#dates.year(#dates.createNow())}" id="pubYear" th:value="${searchCriteria.publicationYear}" name="publicationYear" >
+                                                    </div>
+                                                    <div class="clearfix"></div>
+                                                </div>
+                                                    <input type="hidden"
+                                                           name="size" th:value="${bookPage.size}" />
+                                                    <input type="hidden"
+                                                           name="page" value="0" />
+                                                    <input type="hidden" name="sort" th:value="${sort}" />
+                                                    <input type="hidden" name="order" th:value="${order}" />
+                                                    <input type="hidden"
+                                                           th:if="${searchCriteria.title != null}" name="title" th:value="${searchCriteria.title}">
+
+                                            <div class="form-group">
+                                                <input class="form-control"
+                                                       type="submit"
+                                                       value="Apply filter">
+                                            </div>
+
+                                                </form>
+                                            </div>
+                                            <div class="clearfix"></div>
+                                        </div>
+                                    </aside>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </main>
+            </div>
+        </div>
+        <!-- End: Books & Media Section -->
+        <!-- Start: Footer -->
+        <footer class="site-footer" th:insert="fragments/footer :: footer">
+        </footer>
+        <!-- End: Footer -->
+
+        <!-- jQuery Latest Version 1.x -->
+        <th:block th:insert="~{fragments/scripts :: script}"></th:block>
+
+    </body>
+
+
+</html>
