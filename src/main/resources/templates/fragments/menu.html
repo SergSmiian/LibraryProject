@@ -1,0 +1,134 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" lang="en"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+        <!-- Start: Header Section -->
+        <header  th:fragment="head" id="header-v1"
+                 class="navbar-wrapper inner-navbar-wrapper">
+            <div class="container">
+                <div class="row">
+                    <nav class="navbar navbar-default">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="navbar-header">
+                                    <div class="navbar-brand">
+                                        <h1>
+                                            <a th:href="@{/}">
+                                                <img
+                                                        th:src="@{/images/libraria-logo-v1.png}" alt="LIBRARIA" />
+                                            </a>
+                                        </h1>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-9">
+                                <!-- Header Topbar -->
+                                <div class="header-topbar hidden-sm hidden-xs">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="topbar-info">
+                                                <a
+                                                        th:href="@{tel:+38-050-051-2225}"><i class="fa fa-phone"></i>+38-050-051-2225</a>
+                                                <span>/</span>
+                                                <a
+                                                        href="mailto:SmiianSF@gmail.com"><i class="fa fa-envelope"></i>libraryappmy@gmail.com</a>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="topbar-links">
+                                                <a
+                                                        th:href="@{/signin}" sec:authorize="isAnonymous()" ><i
+                                                        class="fa fa-lock"></i>Login / Register</a>
+                                                <a
+                                                        th:href="@{/user/logout}" sec:authorize="isAuthenticated()" ><span sec:authentication="name"></span><i
+                                                        class="fa fa-lock"></i>Logout</a>
+                                                <span  sec:authorize="hasAuthority('USER')">|</span>
+                                                <div
+                                                        class="header-cart dropdown" sec:authorize="hasAuthority('USER')">
+                                                    <a data-toggle="dropdown"
+                                                       class="dropdown-toggle" href="#">
+                                                        <i class="fa fa-shopping-cart"></i>
+                                                        <small
+                                                                th:unless="${#lists.isEmpty(session.cart)}" id="cart_size"
+                                                                th:text="${#lists.size(session.cart)}">0</small>
+                                                        <small
+                                                                th:if="${#lists.isEmpty(session.cart)}" id="cart_size">0</small>
+
+                                                    </a>
+                                                    <div
+                                                            class="dropdown-menu cart-dropdown" id="cart-dropdown">
+                                                        <ul
+                                                                id="shopping-cart-list">
+                                                            <li th:unless="${#lists.isEmpty(session.cart)}"
+                                                                    class="clearfix"  th:each="book : ${session.cart}" th:rel="${book.id}">
+                                                                <img
+                                                                        th:src="@{${book.imagePath}}" alt="cart item" />
+                                                                <div class="item-info">
+                                                                    <div class="name">
+                                                                        <strong
+                                                                                th:text="|${book.title}|"></strong>
+                                                                    </div>
+                                                                </div>
+                                                                <a
+                                                                        class="remove remove-cart-item" th:rel="${book.id}"><i class="fa fa-trash-o"></i></a>
+                                                            </li>
+                                                        </ul>
+                                                        <div class="cart-buttons">
+                                                            <a
+                                                                    th:unless="${#lists.isEmpty(session.cart)}"  class="btn btn-primary checkout">Checkout</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="navbar-collapse hidden-sm hidden-xs">
+                                    <ul class="nav navbar-nav">
+                                        <li
+                                                th:class="${page == 'HOME'} ? 'dropdown active' : 'dropdown'">
+                                            <a data-toggle="dropdown"
+                                               class="dropdown-toggle disabled" th:href="@{/}">Home</a>
+                                        </li>
+                                        <li
+                                                th:class="${page=='BOOKS'} ? 'dropdown active' : 'dropdown'">
+                                            <a data-toggle="dropdown"
+                                               class="dropdown-toggle disabled" th:href="@{/books/bok}">Books</a>
+                                        </li>
+                                        <li
+                                                th:class="${page=='ORDERS'} ? 'dropdown active' : 'dropdown'">
+                                            <a data-toggle="dropdown"
+                                               class="dropdown-toggle disabled" sec:authorize="hasAuthority('USER')" th:href="@{/user/order}">My Orders</a>
+                                        </li>
+                                        <li
+                                                th:class="${page=='ADMIN'} ? 'dropdown active' : 'dropdown'"
+                                            sec:authorize="hasAuthority('ADMIN') || hasAuthority('LIBRARIAN')">
+                                            <a data-toggle="dropdown"
+                                               class="dropdown-toggle disabled">ADMIN</a>
+                                            <ul class="dropdown-menu">
+                                                <li><a
+                                                        th:href="@{/librarian/books}">Manage
+                                                    books
+                                                </a></li>
+                                                <li><a
+                                                        th:href="@{/librarian/orders}">Manage Orders</a></li>
+                                                <li><a sec:authorize="hasAuthority('ADMIN')"
+                                                        th:href="@{/admin/users}">Manage users</a></li>
+                                            </ul>
+                                        </li>
+                                        <li
+                                                th:class="${page=='SERVICES'} ? 'dropdown active' : 'dropdown'"><a th:href="@{/services}">Services
+                                        </a></li>
+                                        <li
+                                                th:class="${page=='CONTACT'} ? 'dropdown active' : 'dropdown'"><a th:href="@{/contact}">Contact
+                                        </a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+        </header>
+</html>    <!-- End: Header Section -->

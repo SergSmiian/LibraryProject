@@ -1,0 +1,70 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" lang="en"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+
+<head th:insert="fragments/head :: headtag">
+
+
+<body th:with="httpStatus=${T(org.springframework.http.HttpStatus).valueOf(#response.status)}">
+<!-- Start: Header Section -->
+<header id="header-v1" class="navbar-wrapper inner-navbar-wrapper"
+        th:insert="fragments/menu :: head"></div>
+</header>
+
+<section class="page-banner services-banner">
+    <div class="container">
+        <div class="banner-header">
+            <h2>Error happened!</h2>
+            <span class="underline center"></span>
+        </div>
+    </div>
+</section>
+<!-- End: Page Banner -->
+
+<!-- Start: 404 Section -->
+<div id="content" class="site-content">
+    <div id="primary" class="content-area">
+        <main id="main" class="site-main">
+            <div class="error-main">
+                <div class="container">
+                    <div class="error-view">
+                        <div class="company-info">
+                            <div class="col-md-5 col-md-offset-1 border-dark-left">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="error-box bg-dark margin-left text-center">
+                                            <img
+                                                    th:src="@{/images/Error.JPG}" alt="Error Image">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-5 border-dark new-user">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="error-info bg-light margin-right">
+                                            <span>Oops
+                                                <span
+                                                    th:utext="${'Something went wrong' + #strings.defaultString(errorMessage,' ')}">Page Not
+                                                Found!</span></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<!-- Start: Footer -->
+<footer class="site-footer" th:insert="fragments/footer :: footer">
+</footer>
+<!-- End: Footer -->
+<th:block th:insert="~{fragments/scripts :: script}"></th:block>
+</body>
+</html>

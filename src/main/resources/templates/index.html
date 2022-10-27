@@ -1,0 +1,132 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:insert="fragments/head :: headtag">
+
+<body>
+
+<!-- Start: Header Section -->
+<header id="header-v1" class="navbar-wrapper inner-navbar-wrapper"
+        th:insert="fragments/menu :: head(page='HOME')"></div>
+</header>
+        
+        <!-- Start: Slider Section -->
+        <div data-ride="carousel" class="carousel slide" id="home-v1-header-carousel">
+            
+            <!-- Carousel slides -->
+            <div class="carousel-inner">
+                <div class="item active">
+                    <figure>
+                        <img alt="Home Slide" src="images/header-slider/home-v1/header-slide.jpg" />
+                    </figure>
+                    <div class="container">
+                        <div class="carousel-caption">
+                            <h3>Learning Anytime, Anywhere!</h3>
+                            <h2>"Discover Your Roots!"</h2>
+                            <p></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="item">
+                    <figure>
+                        <img alt="Home Slide"
+                             src="images/header-slider/home-v2/header-slide.jpg" />
+                    </figure>
+                    <div class="container">
+                        <div class="carousel-caption">
+                            <h3>Learning Anytime, Anywhere!</h3>
+                            <h2>"The rows of shelves of books. To my taste, the most calming kind of infinity..."</h2>
+                            <p></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="item">
+                    <figure>
+                        <img alt="Home Slide"
+                             src="images/header-slider/home-v3/header-slide.jpg" />
+                    </figure>
+                    <div class="container">
+                        <div class="carousel-caption">
+                            <h3>Learning Anytime, Anywhere!</h3>
+                            <h2>"There is only one means to become a cultured man - reading"</h2>
+                            <p></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Controls -->
+            <a class="left carousel-control" href="#home-v1-header-carousel" data-slide="prev"></a>
+            <a class="right carousel-control" href="#home-v1-header-carousel" data-slide="next"></a>
+        </div>
+        <!-- End: Slider Section -->
+
+        
+        <!-- Start: Welcome Section -->
+        <section class="welcome-section">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="welcome-wrap">
+                            <div class="welcome-text">
+                                <h2 class="section-title">Welcome to the libraria</h2>
+                                <span class="underline left"></span>
+                                <p class="lead">Read books - some of them are specifically written for this purpose</p>
+                                <p> The work of our library is aimed at
+                                    information support of the life process,
+                                    which involves teaching people the art of living, high skill in the creative construction of their being, based on deep knowledge of it, developed self-awareness, mastering the technology of programming, designing and implementation of life as an individual-personal life project</p>
+                                <!--<a class="btn btn-primary" href="#">Read
+                                More</a>-->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="facts-counter">
+                            <ul>
+                                <li class="bg-light-green">
+                                    <div class="fact-item">
+                                        <div class="fact-icon">
+                                            <i class="ebook"></i>
+                                        </div>
+                                        <span>eBooks<strong class="fact-counter">45780</strong></span>
+                                    </div>
+                                </li>
+                                <li class="bg-green">
+                                    <div class="fact-item">
+                                        <div class="fact-icon">
+                                            <i class="eaudio"></i>
+                                        </div>
+                                        <span>eAudio<strong class="fact-counter">32450</strong></span>
+                                    </div>
+                                </li>
+                                <li class="bg-red">
+                                    <div class="fact-item">
+                                        <div class="fact-icon">
+                                            <i class="magazine"></i>
+                                        </div>
+                                        <span>Magazine<strong class="fact-counter">14450</strong></span>
+                                    </div>
+                                </li>
+                                <li class="bg-blue">
+                                    <div class="fact-item">
+                                        <div class="fact-icon">
+                                            <i class="videos"></i>
+                                        </div>
+                                        <span>Videos<strong class="fact-counter">32450</strong></span>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="welcome-image"></div>
+        </section>
+        <!-- End: Welcome Section -->
+
+
+        <footer class="site-footer" th:insert="fragments/footer :: footer"></footer>
+        <!-- End: Footer -->
+        <th:block th:insert="~{fragments/scripts :: script}"></th:block>
+    </body>
+</html>

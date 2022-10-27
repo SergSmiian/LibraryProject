@@ -1,0 +1,327 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head th:insert="fragments/head :: headtag">
+    
+    <body>
+        
+        <!-- Start: Header Section -->
+        <header id="header-v1" class="navbar-wrapper inner-navbar-wrapper"
+                th:insert="fragments/menu :: head(page='ADMIN')"></div>
+        </header>
+        
+        <!-- Start: Page Banner -->
+        <section class="page-banner services-banner">
+            <div class="container">
+                <div class="banner-header">
+                    <h2>Manage Books</h2>
+                    <span class="underline center"></span>
+                    <p class="lead">Page to update/delete/add new page</p>
+                </div>
+                <div class="breadcrumb">
+                    <ul>
+                        <li><a th:href="@{/}">Home</a></li>
+                        <li>Dashboard</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <div  th:each="book : ${bookPage.content}">
+        <div class="overlay_popup"  th:rel="${book.id}"></div>
+        <div class="popup" id="popup1"  th:rel="${book.id}">
+
+            <div class="object"  th:rel="${book.id}">
+                <button class="close" th:rel="${book.id}">X</button>
+                <form
+                        th:action="@{/librarian/books}" class="edit-book" method="put" name="edit-book">
+                    <div class="row">
+                        <div id="book_details_edit">
+                            <div class="col-xs-12 col-sm-12">
+                                <div class="woocommerce-billing-fields">
+                                    <h2 class="create-book">Edit Book</h2>
+                                    <span class="underline left"></span>
+                                    <div class="row">
+                                        <div class="billing-address-box">
+                                            <div class="col-xs-12 col-sm-12">
+                                                <p id="title_field_edit" class="form-row form-row form-row-wide">
+                                                    <label
+                                                            for="book_title_edit">Book title</label>
+                                                    <input th:value="${book.title}" type="text" placeholder="Book Title" id="book_title_edit" name="title" class="input-text">
+                                                </p>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-12">
+                                                <p id="book_isbn_field_edit" class="form-row form-row form-row-wide validate-required">
+                                                    <label
+                                                            for="book_isbn_edit">ISBN</label>
+                                                    <input type="text" th:value="${book.isbn}" placeholder="ISBN" id="book_isbn_edit" name="isbn" class="input-text">
+                                                </p>
+                                            </div>
+                                            <div class="clear"></div>
+                                            <div class="col-xs-12 col-sm-12">
+                                                <p id="writing_title_field_edit" class="form-row form-row form-row-wide">
+                                                    <label
+                                                            for="writing_title_edit">Writing titles/Authors</label>
+                                                    <textarea
+                                                            th:text="${book.writingsToAuthors}" placeholder="Writing Title^ author firstName|author lastName; author firstName| author lastName" id="writing_title_edit" name="writingToAuthor" class="input-text"></textarea>
+                                                </p>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-12">
+                                                <p id="image_path_field_edit" class="form-row form-row form-row-wide image_path_field_edit validate-required">
+                                                    <label
+                                                            for="image_path_edit">Image path</label>
+                                                   <textarea
+                                                           th:text=="${book.imagePath}"  placeholder="Image Path" id="image_path_edit" class="input-text" name="imagePath"></textarea>
+                                                </p>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-12">
+
+                                                <p id="publisher_name_field_edit" class="form-row form-row form-row-wide publisher_name_field_edit validate-required">
+                                                    <label
+                                                            for="publisher_name_edit">Publisher name</label>
+                                                    <input type="text"
+                                                           th:value="${book.publisherName}" placeholder="Publisher name" id="publisher_name_edit" name="publisherName" class="input-text">
+                                                </p>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-6">
+                                                <p
+                                                        id="publication_year_field_edit" class="form-row form-row form-row-first publication_year_field_edit validate-state validate-required" data-o_class="form-row form-row form-row-first publication_year_field_edit validate-required validate-state">
+                                                    <label
+                                                            for="publication_year_edit">Publication year</label>
+                                                    <input type="number"
+                                                           id="publication_year_edit" th:value="${book.yearOfPublication}" min="1445" th:max="${#dates.year(#dates.createNow())}" placeholder="Publication Year" name="yearOfPublication" class="input-text">
+                                                </p>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-6">
+                                                <p id="max_days_field_edit" class="form-row form-row form-row-last max_days_field validate-postcode validate-required">
+                                                    <label
+                                                            for="max_days_edit">Max Days to borrow the book</label>
+                                                    <input type="number"  th:value="${book.maxDays}"  min="1" placeholder="Max Days to Take Order" id="max_days_edit" name="maxDaysToOrder" class="input-text ">
+                                                </p>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-12">
+                                                <p id="description_field_edit" class="form-row form-row form-row-wide">
+                                                    <label
+                                                            for="book_description_edit">Description</label>
+                                                    <textarea th:text="${book.description}"  placeholder="Description" id="book_description_edit" name="description" class="input-text"></textarea>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <input type="hidden"
+                                           th:value="${book.id}" name="id">
+                                    <input type="submit"
+                                           data-value="Edit book"
+                                           formmethod = "POST" value="Edit book"
+                                           class="button alt btn btn-default"
+                                           formaction="/librarian/books/edit">
+
+                                    <div class="clear"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                </span>
+            </div>
+        </div>
+        </div>
+        <!-- End: Page Banner -->
+        <!-- Start: Cart Section -->
+        <div id="content" class="site-content">
+            <div id="primary" class="content-area">
+                <main id="main" class="site-main">
+                    <div class="cart-main">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="page type-page status-publish hentry">
+                                        <div class="entry-content">
+                                            <div class="woocommerce table-tabs" id="responsiveTabs">
+                                                <ul class="nav nav-tabs">
+                                                    <li class="active"><b
+                                                            class="arrow-up"></b><a data-toggle="tab" href="#sectionA">View Books</a></li>
+                                                    <li><b
+                                                            class="arrow-up"></b><a data-toggle="tab" href="#sectionB">Add New Book</a></li>
+                                                </ul>
+                                                <div class="tab-content">
+                                                    <div id="sectionA" class="tab-pane fade in active">
+                                                        <div class="col-md-4 col-sm-4">
+                                                            <div class="filter-result"
+                                                                 th:with="num = ${bookPage.numberOfElements==0?0:1}"
+                                                                 th:text="'Showing items '+ ${bookPage.number * bookPage.size + num} + ' to ' + ${bookPage.number * bookPage.size + bookPage.numberOfElements} + ' of ' + ${bookPage.totalElements} + ' total'"></div>
+                                                        </div>
+                                                        <table class="table table-bordered shop_table cart">
+                                                            <thead>
+                                                            <tr>
+                                                                <th class="product-name">&nbsp;</th>
+                                                                <th class="product-name">Description</th>
+                                                                <th class="product-name">Due date</th>
+                                                                <th class="product-name">Action</th>
+                                                            </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                            <tr
+                                                                    class="book_item"  th:each="book : ${bookPage.content}">
+                                                                <td data-title="Product" class="product-name">
+
+                                                                            <span class="product-thumbnail">
+                                                                                    <a><img th:src="${book.imagePath}"  width="100" height="111"></a>
+                                                                            </span>
+                                                                </td>
+                                                                <td data-title="Product" class="product-name">
+                                                                   <span class="product-detail">
+                                                                       <h3 class="entry-title"><strong th:text="${book.title}"></strong></h3>
+                                                                               <span>
+                                                                                   <strong>ISBN:</strong><span th:text="${book.isbn}"></span></br>
+                                                                                   <strong>Contents:</strong>
+                                                                                   <span>
+                                                                                   <ul th:each="instance : ${book.writings}">
+                                                                                        <li
+                                                                                                th:text="|${instance.value} -  ${instance.key}"></li>
+                                                                                    </ul>
+                                                                                   </span>
+                                                                               </span>
+
+                                                                   </span>
+                                                                </td>
+                                                                <td data-title="Product" class="product-name">
+                                                                    <span class="product-detail">
+                                                                               <span>
+                                                                                   <strong>Publisher:</strong><span th:text="${book.publisherName}"></span></br>
+                                                                                   <strong>Year:</strong><span th:text="${book.yearOfPublication}"></span></br>
+                                                                                   <strong>Book Status:</strong><span th:text="${book.bookStatus}"></span></br>
+                                                                               </span>
+
+                                                                   </span>
+                                                                </td>
+                                                                <td
+                                                                        class="product-remove" >
+                                                                    </br>
+                                                                   <a
+                                                                           class="book-remove" th:rel="${book.id}">remove</a>
+                                                                    <a
+                                                                            class="book-edit" th:rel="${book.id}">edit</a>
+                                                                </td>
+                                                            </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        <nav class="navigation pagination text-center">
+                                                            <h2 class="screen-reader-text">Posts navigation</h2>
+                                                            <div class="nav-links">
+                                                                <ul>
+                                                                    <li class="prev page-numbers">
+                                                                        <a th:if="${bookPage.number > 0}"
+                                                                           th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+                                                                           th:href="@{${urlBuilder.replaceQueryParam('page', __${bookPage.number-1}__).build().toUriString()}}">
+                                                                            <i class="fa fa-long-arrow-left"></i> Previous</a></li>
+                                                                    <li
+                                                                            th:if="${bookPage.totalPages > 0}"  th:each="pageNumber: ${#numbers.sequence(1, bookPage.totalPages)}" th:class="${pageNumber==bookPage.number+1} ? 'page-numbers current' : 'page-numbers'"  >
+                                            <span
+                                                    th:if="${pageNumber==bookPage.number+1}"  th:text=${pageNumber}></span>
+                                                                        <a
+                                                                                th:unless="${pageNumber==bookPage.number+1}"
+                                                                                th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+                                                                                th:href="@{${urlBuilder.replaceQueryParam('page', __${pageNumber-1}__).build().toUriString()}}"
+                                                                                th:text=${pageNumber}></a>
+
+                                                                    </li>
+                                                                    <li class="next page-numbers"><a
+                                                                            th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+                                                                            th:if="${bookPage.number < bookPage.totalPages - 1}"
+                                                                            th:href="@{${urlBuilder.replaceQueryParam('page', __${bookPage.number+1}__).build().toUriString()}}">Next <i
+                                                                            class="fa fa-long-arrow-right"></i></a></li>
+                                                                </ul>
+                                                            </div>
+                                                        </nav>
+                                                    </div>
+                                                    <div id="sectionB" class="tab-pane fade in">
+                                                        <form
+                                                                th:action="@{/librarian/books}" th:object="${createBookDto}"
+                                                                class="create-book" method="post" name="create-book">
+                                                            <div class="row">
+                                                                <div
+                                                                        id="book_details">
+                                                                    <div class="col-xs-12 col-sm-6">
+                                                                        <div class="woocommerce-billing-fields">
+                                                                            <h2 class="create-book">Create Book</h2>
+                                                                            <span class="underline left"></span>
+                                                                            <div class="row">
+                                                                                <div class="billing-address-box">
+                                                                                    <div class="col-xs-12 col-sm-6">
+                                                                                        <p id="title_field" class="form-row form-row form-row-first">
+                                                                                            <input th:field="*{title}" type="text" value="" placeholder="Book Title" id="book_title" name="book_title" class="input-text">
+                                                                                        </p>
+                                                                                    </div>
+                                                                                    <div class="col-xs-12 col-sm-6">
+                                                                                        <p id="book_isbn_field" class="form-row form-row form-row-last validate-required">
+                                                                                            <input type="text" th:field="*{isbn}" value=""  placeholder="ISBN" id="book_isbn" name="book_isbn" class="input-text">
+                                                                                        </p>
+                                                                                    </div>
+                                                                                    <div class="clear"></div>
+                                                                                    <div class="col-xs-12 col-sm-12">
+                                                                                        <p id="writing_title_field" class="form-row form-row form-row-wide">
+                                                                                            <label for="writing_title"> Writing Title^ author firstName|author lastName; author firstName| author lastName </label>
+
+                                                                                            <textarea  type="text" value=""  th:field="*{writingToAuthor}" placeholder="Writing Title" id="writing_title" name="writing_title" class="input-text "></textarea>
+                                                                                        </p>
+                                                                                    </div>
+                                                                                    <div class="col-xs-12 col-sm-12">
+                                                                                        <p id="image_path_field" class="form-row form-row form-row-wide image_path-field validate-required">
+                                                                                            <input type="text" th:field="*{imagePath}" value="" placeholder="Image Path" name="image_path" class="input-text">
+                                                                                        </p>
+                                                                                    </div>
+                                                                                    <div class="col-xs-12 col-sm-12">
+                                                                                        <p id="publisher_name_field" class="form-row form-row form-row-wide publisher_name_field validate-required">
+                                                                                            <input type="text" value="" th:field="*{publisherName}" placeholder="Publisher name" name="publisher_name" class="input-text">
+                                                                                        </p>
+                                                                                    </div>
+                                                                                    <div class="col-xs-12 col-sm-6">
+                                                                                        <p id="publication_year_field" class="form-row form-row form-row-first publication_year_field validate-state validate-required" data-o_class="form-row form-row form-row-first publication_year_field validate-required validate-state">
+                                                                                            <input type="number" name="publication_year" th:field="*{yearOfPublication}" min="1445" th:max="${#dates.year(#dates.createNow())}" placeholder="Publication Year" value="" class="input-text ">
+                                                                                        </p>
+                                                                                    </div>
+                                                                                    <div class="col-xs-12 col-sm-6">
+                                                                                        <p id="max_days_field" class="form-row form-row form-row-last max_days_field validate-postcode validate-required" data-o_class="form-row form-row form-row-last max_days_field validate-required validate-postcode">
+                                                                                            <input type="number" value="" th:field="*{maxDaysToOrder}" min="1" placeholder="Max Days to Take Order" id="max_days" name="max_days" class="input-text ">
+                                                                                        </p>
+                                                                                    </div>
+                                                                                    <div class="col-xs-12 col-sm-12">
+                                                                                        <p id="description_field" class="form-row form-row form-row-wide">
+                                                                                            <textarea  type="text" value="" th:field="*{description}"  placeholder="Description" id="book_description" name="book_description" class="input-text "></textarea>
+                                                                                        </p>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <input type="submit" data-value="Create book" value="Create book" id="create_book"  class="button alt btn btn-default">
+
+                                                                            <div class="clear"></div>
+                                                                        </div>
+                                                                    </div>
+                                                               </div>
+                                                            </div>
+                                                        </form>
+                                                   </div>
+                                                </div>
+                                            </div>
+                                        </div><!-- .entry-content -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+        <!-- End: Cart Section -->
+
+        <!-- Start: Footer -->
+        <footer class="site-footer" th:insert="fragments/footer :: footer">
+        </footer>
+        <!-- End: Footer -->
+        <th:block th:insert="~{fragments/scripts :: script}"></th:block>
+        
+    </body>
+
+
+</html>

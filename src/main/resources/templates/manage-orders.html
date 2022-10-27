@@ -1,0 +1,191 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org" lang="en"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:insert="fragments/head :: headtag">
+    
+    <body>
+    <!-- Start: Header Section -->
+    <header id="header-v1" class="navbar-wrapper inner-navbar-wrapper"
+            th:insert="fragments/menu :: head(page='ADMIN')">
+    </header>
+    <!-- End: Header Section -->
+        <!-- End: Header Section -->
+        
+        <!-- Start: Page Banner -->
+        <section class="page-banner services-banner">
+            <div class="container">
+                <div class="banner-header">
+                    <h2>Order Page</h2>
+                    <span class="underline center"></span>
+                    <p class="lead">Orders to action on</p>
+                </div>
+                <div class="breadcrumb">
+                    <ul>
+                        <li><a th:href="@{/}">Home</a></li>
+                        <li>Dashboard</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+        <!-- End: Page Banner -->
+        <!-- Start: Cart Section -->
+        <div id="content" class="site-content">
+            <section class="search-filters">
+                <div class="container">
+                    <div class="filter-box">
+                        <form
+                                th:action="@{/librarian/orders}" method="get">
+                            <div class="col-md-4 col-sm-6">
+                                <div class="form-group"
+                                     id="orderSearchByName">
+                                    <label
+                                            class="sr-only"
+                                            for="userName">Search by
+                                        user name</label>
+                                    <input
+                                            class="form-control"
+                                            placeholder="User" id="userName"
+                                            name="userName" type="text" th:value="${search.userName}">
+
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-sm-6">
+                                <div class="form-group"  id="orderSearchByStatus">
+                                    <select    class="form-control"
+                                               placeholder="Order Status"
+                                               id="orderStatus"
+                                               name="orderStatuses" multiple>
+                                        <option
+                                                th:each="orderStatus : ${T(com.model.status.OrderStatus).values()}" th:value="${orderStatus}" th:text="${orderStatus}"  th:selected="${search.orderStatuses!=null && search.orderStatuses.contains(orderStatus)}"></option>
+                                    </select>
+
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-6">
+                                <div class="form-group">
+                                    <input class="form-control" type="submit" value="Search">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+            <div id="primary" class="content-area">
+                <main id="main" class="site-main">
+                    <div class="cart-main">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="page type-page status-publish hentry">
+                                        <div class="entry-content">
+                                            <div class="woocommerce table-tabs" id="responsiveTabs">
+                                                <div class="tab-content">
+                                                    <div id="sectionA" class="tab-pane fade in active">
+                                                        <div
+                                                                class="col-md-4 col-sm-4"  th:if="${orderPage.numberOfElements>0}">
+                                                            <div class="filter-result"
+                                                                 th:with="num = ${orderPage.numberOfElements==0?0:1}"
+                                                                 th:text="'Showing items '+ ${orderPage.number * orderPage.size + num} + ' to ' + ${orderPage.number * orderPage.size + orderPage.numberOfElements} + ' of ' + ${orderPage.totalElements} + ' total'"></div>
+                                                        </div>
+                                                        <div  th:if="${orderPage.numberOfElements==0}">
+                                                            <img th:src="@{/images/no-result.png}" />
+
+                                                        </div>
+                                                            <table
+                                                                    class="table table-bordered shop_table cart" th:if="${orderPage.numberOfElements>0}">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th
+                                                                                class="product-name">User</th>
+                                                                        <th
+                                                                                class="product-name">Description</th>
+                                                                        <th class="product-name">Due date</th>
+                                                                        <th class="product-name">Action</th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr
+                                                                            class="order_item"  th:each="order :  ${orderPage.content}">
+                                                                        <td data-title="Product" class="product-name">
+                                                                             <span class="product-detail">
+                                                                                 <span th:text="${order.login}"></span>
+
+                                                                            </span>
+                                                                        </td>
+                                                                        <td data-title="Product" class="product-name">
+                                                                                <span class="product-detail">
+                                                                                <strong th:text="${order.bookTitle}"></strong>
+                                                                               <span> <strong>Status:</strong><span th:text="${order.orderStatus}"></span></span>
+
+                                                                            </span>
+                                                                        </td>
+                                                                        <td data-title="Product" class="product-name">
+                                                                                <span class="product-detail">
+                                                                                 <strong>Due date:</strong><span th:text="${order.dueDate}"></span>
+                                                                                    <strong>Issue date:</strong><span th:text="${order.issueDate}"></span>
+                                                                            </span>
+                                                                        </td>
+                                                                        <td
+                                                                                class="confirm-order" th:if="${order.orderStatus.name() == 'PENDING'}">
+                                                                               <a class="btn btn-primary order-confirm" th:rel="${order.id}">Сheck out book</a>
+                                                                        </td>
+                                                                        <td
+                                                                                class="close-order" th:if="${order.orderStatus.name() == 'IN_PROGRESS'}">
+                                                                            <a class="btn btn-primary order-close" th:rel="${order.id}">Close order</a>
+                                                                        </td>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                    </div>
+                                                    <nav class="navigation pagination text-center">
+                                                        <h2 class="screen-reader-text">Posts navigation</h2>
+                                                        <div class="nav-links">
+                                                            <ul>
+                                                                <li class="prev page-numbers">
+                                                                    <a
+                                                                            th:if="${orderPage.number > 0}"
+                                                                       th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+                                                                       th:href="@{${urlBuilder.replaceQueryParam('page', __${orderPage.number-1}__).build().toUriString()}}">
+                                                                        <i class="fa fa-long-arrow-left"></i> Previous</a></li>
+                                                                <li
+                                                                        th:if="${orderPage.totalPages > 0}"  th:each="pageNumber: ${#numbers.sequence(1, orderPage.totalPages)}" th:class="${pageNumber==orderPage.number+1} ? 'page-numbers current' : 'page-numbers'"  >
+                                            <span
+                                                    th:if="${pageNumber==orderPage.number+1}"  th:text=${pageNumber}></span>
+                                                                    <a
+                                                                            th:unless="${pageNumber==orderPage.number+1}"
+                                                                            th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+                                                                            th:href="@{${urlBuilder.replaceQueryParam('page', __${pageNumber-1}__).build().toUriString()}}"
+                                                                            th:text=${pageNumber}></a>
+
+                                                                </li>
+                                                                <li class="next page-numbers"><a
+                                                                        th:with="urlBuilder=${T(org.springframework.web.servlet.support.ServletUriComponentsBuilder).fromCurrentRequest()}"
+                                                                        th:if="${orderPage.number < orderPage.totalPages - 1}"
+                                                                        th:href="@{${urlBuilder.replaceQueryParam('page', __${orderPage.number+1}__).build().toUriString()}}">Next <i
+                                                                        class="fa fa-long-arrow-right"></i></a></li>
+                                                            </ul>
+                                                        </div>
+                                                    </nav>
+                                                </div>
+                                            </div>
+                                        </div><!-- .entry-content -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+        </div>
+        <!-- End: Cart Section -->
+    <!-- Start: Footer -->
+    <footer class="site-footer" th:insert="fragments/footer :: footer">
+    </footer>
+    <!-- End: Footer -->
+    <th:block th:insert="~{fragments/scripts :: script}"></th:block>
+    </body>
+
+
+</html>
