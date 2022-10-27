@@ -2,6 +2,7 @@ package com.service;
 
 import com.dto.EmailDto;
 import com.model.Order;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -16,7 +17,7 @@ import javax.mail.internet.MimeMessage;
 public class EmailService {
     private  TemplateEngine templateEngine;
     private  JavaMailSender javaMailSender;
-
+    @Autowired
     public EmailService(TemplateEngine templateEngine, JavaMailSender javaMailSender) {
         this.templateEngine = templateEngine;
         this.javaMailSender = javaMailSender;

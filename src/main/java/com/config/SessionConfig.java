@@ -16,7 +16,7 @@ public class SessionConfig {
     }
 
     @Bean
-    public ServletListenerRegistrationBean<SessionListener> sessionListenerWithMetrics() {
+    public ServletListenerRegistrationBean<SessionListener> sessionListener() {
         ServletListenerRegistrationBean<SessionListener> listenerRegBean =
                 new ServletListenerRegistrationBean<>();
 

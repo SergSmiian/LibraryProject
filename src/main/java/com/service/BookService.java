@@ -14,6 +14,7 @@ import com.repository.WritingRepository;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -33,7 +34,7 @@ public class BookService {
     private PublisherRepository publisherRepository;
     private AuthorRepository authorRepository;
     private WritingRepository writingRepository;
-
+    @Autowired
     public BookService(BookRepository bookRepository, PublisherRepository publisherRepository, AuthorRepository authorRepository, WritingRepository writingRepository) {
         this.bookRepository = bookRepository;
         this.publisherRepository = publisherRepository;

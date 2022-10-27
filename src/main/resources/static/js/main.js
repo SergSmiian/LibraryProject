@@ -282,6 +282,9 @@ $(function () {
                             type : 'DELETE',
                             success : function ( data ) {
                                  window.location.reload();
+                            },
+                            error: function (error) {
+                                 alert("error");
                             }
 
                          });

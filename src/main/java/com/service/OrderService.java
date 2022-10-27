@@ -12,6 +12,7 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -35,7 +36,7 @@ public class OrderService {
     private OrderRepository orderRepository;
 
     private EmailService emailService;
-
+    @Autowired
     public OrderService(OrderRepository orderRepository, EmailService emailService) {
         this.orderRepository = orderRepository;
         this.emailService = emailService;

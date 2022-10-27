@@ -9,6 +9,7 @@ import com.model.Publisher;
 import com.service.AuthorService;
 import com.service.BookService;
 import com.service.PublisherService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -22,7 +23,7 @@ public class BookController {
     private BookService bookService;
     private AuthorService authorService;
     private PublisherService publisherService;
-
+    @Autowired
     public BookController(BookService bookService, AuthorService authorService, PublisherService publisherService) {
         this.bookService = bookService;
         this.authorService = authorService;

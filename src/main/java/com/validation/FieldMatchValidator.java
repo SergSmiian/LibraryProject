@@ -1,11 +1,16 @@
 package com.validation;
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 import java.util.Objects;
 
+
 public class FieldMatchValidator implements ConstraintValidator<FieldMatch, Object> {
+    private static final Logger LOGGER = LoggerFactory.getLogger(FieldMatchValidator.class);
 
     private String firstFieldName;
     private String secondFieldName;
@@ -26,8 +31,8 @@ public class FieldMatchValidator implements ConstraintValidator<FieldMatch, Obje
             final Object secondObj = BeanUtils.getProperty(value, secondFieldName);
 
             valid = Objects.equals(firstObj, secondObj);
-        } catch (final Exception ignore) {
-            //TODO add logger
+        } catch (Exception ignore) {
+            LOGGER.warn("validation issues ", ignore);
         }
 
         if (!valid) {

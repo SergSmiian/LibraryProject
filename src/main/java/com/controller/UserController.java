@@ -18,7 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping("/user")
 public class UserController {
     public static final String VIEW_NAME = "signin";
     private final UserService service;

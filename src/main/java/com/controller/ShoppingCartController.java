@@ -5,6 +5,7 @@ import com.mapper.CartMapper;
 import com.model.Book;
 import com.service.BookService;
 import org.apache.commons.collections4.CollectionUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -16,7 +17,7 @@ import java.util.List;
 public class ShoppingCartController {
     private BookService bookService;
 
-
+    @Autowired
     public ShoppingCartController(BookService bookService) {
         this.bookService = bookService;
     }

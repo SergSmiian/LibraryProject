@@ -1,6 +1,5 @@
 package com.listener;
 
-import com.controller.ErrorController;
 import com.model.Book;
 import com.service.BookService;
 import org.apache.commons.collections4.CollectionUtils;
@@ -17,7 +16,6 @@ public class SessionListener implements HttpSessionListener {
     private BookService bookService;
 
     public SessionListener(BookService bookService) {
-        super();
         this.bookService = bookService;
     }
 
