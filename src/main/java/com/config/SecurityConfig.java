@@ -39,12 +39,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/signin.html")
                 .loginProcessingUrl("/user/login")
                 .defaultSuccessUrl("/books/bok", true)
-                .failureUrl("/user/login-error.html")
+                .failureUrl("/login-error.html")
                 .and()
                 .rememberMe()
                 .and()
                 .logout().logoutUrl("/user/logout").
-                        logoutSuccessUrl("/user/signin").permitAll()
+                        logoutSuccessUrl("/signin").permitAll()
                 .invalidateHttpSession(true)
                 .and()
                 .csrf().disable();
