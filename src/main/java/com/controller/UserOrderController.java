@@ -5,6 +5,7 @@ import com.mapper.OrderMapper;
 import com.model.Book;
 import com.model.Order;
 import com.model.User;
+import com.service.BusinessException;
 import com.service.OrderService;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,12 +32,11 @@ public class UserOrderController {
     public void makeOrder(HttpSession session, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         List<Book> books = (List) session.getAttribute("cart");
+        session.setAttribute("cart", new ArrayList<>());
         if (CollectionUtils.isEmpty(books)) {
-            books = new ArrayList<>();
+            throw new BusinessException("No books to order");
         }
         orderService.makeOrder(user, books);
-        books = new ArrayList<>();
-        session.setAttribute("cart", books);
     }
     @GetMapping
     public ModelAndView getUserOrders(ModelAndView modelAndView, Authentication authentication,

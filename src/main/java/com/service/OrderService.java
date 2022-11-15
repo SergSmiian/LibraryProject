@@ -8,6 +8,7 @@ import com.model.User;
 import com.model.status.BookStatus;
 import com.model.status.OrderStatus;
 import com.repository.OrderRepository;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -125,9 +126,13 @@ public class OrderService {
         return (root, query, criteriaBuilder) -> {
             query.distinct(true);
             List<Predicate> list = new ArrayList<>();
-            list.add(root.get("status").in(ObjectUtils.defaultIfNull(searchCriteria.getOrderStatuses(),
-                    Arrays.asList(OrderStatus.values()))));
-
+            if (CollectionUtils.isNotEmpty(searchCriteria.getOrderStatuses())&&
+                    searchCriteria.getOrderStatuses().contains("All")){
+                list.add(root.get("status").in(Arrays.asList(OrderStatus.values())));
+            } else {
+                list.add(root.get("status").in(ObjectUtils.defaultIfNull(searchCriteria.getStatuses(),
+                        Arrays.asList(OrderStatus.values()))));
+            }
             if (StringUtils.isNotBlank(searchCriteria.getUserName())) {
                 Join<Order, User> userJoin = root.join("user");
                 list.add(criteriaBuilder.and(criteriaBuilder.equal(userJoin.get("login"),

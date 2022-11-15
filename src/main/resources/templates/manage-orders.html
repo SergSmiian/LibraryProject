@@ -57,8 +57,14 @@
                                                placeholder="Order Status"
                                                id="orderStatus"
                                                name="orderStatuses" multiple>
+                                        <option value="All"
+                                                th:selected="${search.orderStatuses!=null && search.orderStatuses.contains('All')}">All</option>
                                         <option
-                                                th:each="orderStatus : ${T(com.model.status.OrderStatus).values()}" th:value="${orderStatus}" th:text="${orderStatus}"  th:selected="${search.orderStatuses!=null && search.orderStatuses.contains(orderStatus)}"></option>
+                                                th:each="orderStatus : ${T(com.model.status.OrderStatus).values()}"
+                                                th:value="${orderStatus}" th:text="${orderStatus}"
+                                                th:selected="${search.orderStatuses!=null &&
+                                                !search.orderStatuses.contains('All') &&
+                                                search.orderStatuses.contains(orderStatus.name)}"></option>
                                     </select>
 
                                 </div>

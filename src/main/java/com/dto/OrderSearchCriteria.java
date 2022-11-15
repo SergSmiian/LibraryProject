@@ -8,5 +8,11 @@ import java.util.List;
 @Data
 public class OrderSearchCriteria {
     private String userName;
-    private List<OrderStatus> orderStatuses;
+    private List<String> orderStatuses;
+
+    public List<OrderStatus> getStatuses(){
+        if(orderStatuses==null) return null;
+        return orderStatuses.stream().map(OrderStatus::valueOf).toList();
+    }
+
 }
